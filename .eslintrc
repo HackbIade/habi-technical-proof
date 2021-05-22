@@ -1,0 +1,64 @@
+{
+    "parser": "babel-eslint",
+    "extends": [
+      "airbnb",
+      "prettier",
+      "prettier/react",
+      "plugin:jest/recommended"
+    ],
+    "plugins": ["prettier", "jest", "react-hooks"],
+    "rules": {
+      "no-console": "off",
+      "prettier/prettier": [
+        "error",
+        {
+          "trailingComma": "none"
+        }
+      ],
+      "no-irregular-whitespace": 1,
+      "no-else-return": "off",
+      "import/order": "off",
+      "comma-dangle": ["error", "never"],
+      "eqeqeq": ["error", "always"],
+      "no-plusplus": "off",
+      "import/extensions": "off",
+      "import/no-unresolved": "off",
+      "no-use-before-define": ["error", { "functions": false }],
+      "no-unused-expressions": [
+        "error",
+        { "allowShortCircuit": true, "allowTernary": true }
+      ],
+      "quotes": [2, "single", "avoid-escape"],
+      "jsx-quotes": [2, "prefer-single"],
+      "consistent-return": "off",
+      "import/no-dynamic-require": "off",
+      "no-param-reassign": "off",
+      "class-methods-use-this": "off",
+      "no-empty-function": "off",
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-filename-extension": "off",
+      "react/jsx-props-no-spreading": "off",
+      "react/no-array-index-key": "off",
+      "jest/no-mocks-import": "off",
+      "react-hooks/rules-of-hooks": "error", 
+      "react-hooks/exhaustive-deps": "warn", 
+      "jsx-a11y/anchor-is-valid": [
+        "error",
+        {
+          "components": ["Link"],
+          "specialLink": ["hrefLeft", "hrefRight"],
+          "aspects": ["invalidHref", "preferButton"]
+        }
+      ],
+      "react/no-unused-prop-types": "off"
+    },
+    "globals": {
+      "request": true,
+      "app": true,
+      "rootRequire": true
+    },
+    "env": {
+      "browser": true,
+      "jest": true
+    }
+  }
