@@ -81,6 +81,8 @@ Mediante el consumo de servicios cloud manejando autenticación y roles de usuar
   npm install
 ```
 
+- Crear variables de entorno con los valores adjuntos en el correo (ver ejemplo `.env.dev`)
+
 ## Como correrlo?
 
 Abrir una terminal en la ubicacion del folder y ejecutar:
@@ -107,4 +109,5 @@ Thinking about my mental peace, build unit tests and integrated linter. May you'
 
 ## Alguna pregunta/sugerencia 🤔?
 
-- Si [arnold.salazar@outlook.com](arnold.salazar@outlook.com)
+- Comunicación a través de [arnold.salazar@outlook.com](arnold.salazar@outlook.com)
+- Si se requiere información del backend o acceso al repositorio tambien es posible solicitarla al correo.
