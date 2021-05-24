@@ -1,6 +1,7 @@
 import React from 'react';
 import Home from '../views/app/Home';
 import Sales from '../views/app/Sales';
+import Tracking from '../views/app/Tracking';
 import AppLayout from '../layouts/AppLayout';
 import ProtectedRoute from './ProtectedRoute';
 import NotFound from '../views/others/NotFound';
@@ -14,6 +15,12 @@ const AppRouter = () => (
         key='/app/sales'
         path='/app/sales'
         routeComponent={Sales}
+      />
+      <ProtectedRoute
+        allowedRoles={['admin']}
+        key='/app/tracking'
+        path='/app/tracking'
+        routeComponent={Tracking}
       />
       <Route path='*'>
         <NotFound />

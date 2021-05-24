@@ -40,24 +40,28 @@ const NavbarLayout = (props) => {
         <Nav className='mr-auto' navbar>
           <NavItem
             className='mr-2'
+            style={{ cursor: 'pointer' }}
             onClick={() => props.history.push('/app/cretion')}
           >
             Creación
           </NavItem>
           <NavItem
             className='mr-2'
+            style={{ cursor: 'pointer' }}
             onClick={() => props.history.push('/app/sales')}
           >
             Ventas
           </NavItem>
           <NavItem
             className='mr-2'
+            style={{ cursor: 'pointer' }}
             onClick={() => props.history.push('/app/tracking')}
           >
             Seguimiento
           </NavItem>
           <NavItem
             className='mr-2'
+            style={{ cursor: 'pointer' }}
             onClick={() => props.history.push('/app/settings')}
           >
             Ajustes

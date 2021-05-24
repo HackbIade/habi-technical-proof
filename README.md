@@ -1,70 +1,110 @@
-# Getting Started with Create React App
+# Prueba técnica <span style="color: #FFE600;">Habi</span>! [![App](https://img.shields.io/badge/~-Frontend-red)]() [![By](https://img.shields.io/badge/By-Arnold%20Salazar-%)](mailto:arnold.salazar@outlook.com)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+###### [Mayo 24, 2021]
 
-## Available Scripts
+## Qué continen?
 
-In the project directory, you can run:
+- Aplicación frontend para sustentar [Prueba técnica]().
+- Construido con **React Js**.
+- Consume servicios para realizar el seguimiento de ventas de una pizzeria, generación de ventas y craeción de pizzas base e ingredientes.
+- Se creo backend con <span style="color: #FFE600;"><b>Google Cloud functions</b></span> para exponer servicios para la manipulación de la información requerida.
 
-### `npm start`
+## Los servicios ✨:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Fetch para creación de usuarios:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+  POST /test_createUser
 
-### `npm test`
+  "data":{
+    "rol": <rol>,
+    "email": <Email>,
+    "name": <Nombre para mostrar>,
+    "password": <Contraseña>
+    }
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  // se requiere rol "admin" si se desea poder ver el seguimiento
+```
 
-### `npm run build`
+- Fetch para almacenamiento de información a db:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+  POST /test_setSale
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Fetch para obtener información de las pizzas base creadas:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+  POST /test_getPizzas
+```
 
-### `npm run eject`
+- Fetch para obtener información de los ingredientes extras que pueden adicionarse a una venta:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+  POST /test_getIngredients
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Fetch para obtener información paginada del seguimiento de ventas:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+  POST /test_getTracking
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## ¿Cuál es la lógica detrás?
 
-## Learn More
+Mediante el consumo de servicios cloud manejando autenticación y roles de usuarios para dar control a las diferentes vistas del aplicativo 🧐:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Permitir la creación de pizzas basicas que puedan ser seleccionadas como base para una venta `app/creation/pizzas`
+- Permitir la creación de ingredientes para ser usados en la creación de las pizzas base y adicionarlas como extras en la venta si el cliente lo requiere `app/creation/ingredients`
+- Realizar ventas de pizzas, incorporando una pizza base, permitiendo la seleccion de extras y adicionando la información del cliente `app/sales`
+- Permitir el calculo del precio de venta: `precio = rentabilidad * (base + extras)` donde la rentabilidad se toma de la información del usuario la cual es seteada en la creación del mismo y tomada de la parametrización en db.
+- Realizar seguimiento de las ventas de forma página ordenada por fecha.
+- Tener un espacio para parametrizar detalles como la rentabilidad y la creación de usuarios.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Pasos para correr el proyecto en local:
 
-### Code Splitting
+- Clonar repositorio:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+  git clone git@github.com:HackbIade/habi-technical-proof.git
+```
 
-### Analyzing the Bundle Size
+- Ir a la rama main:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+  git checkout main
+```
 
-### Making a Progressive Web App
+- Instalar los paquestes necesarios:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```bash
+  npm install
+```
 
-### Advanced Configuration
+## Como correrlo?
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Abrir una terminal en la ubicacion del folder y ejecutar:
 
-### Deployment
+```bash
+  npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Otros comandos utiles:
 
-### `npm run build` fails to minify
+Thinking about my mental peace, build unit tests and integrated linter. May you'd like to check it:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- For running unit tests:
+
+```bash
+  npm run test
+```
+
+- For running lint check:
+
+```bash
+  npm run lint
+```
+
+## Alguna pregunta/sugerencia 🤔?
+
+- Si [arnold.salazar@outlook.com](arnold.salazar@outlook.com)
