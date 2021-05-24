@@ -1,4 +1,4 @@
-# Prueba técnica <span style="color: #FFE600;">Habi</span>! [![App](https://img.shields.io/badge/~-Frontend-red)]() [![By](https://img.shields.io/badge/By-Arnold%20Salazar-%)](mailto:arnold.salazar@outlook.com)
+# Prueba técnica <span style="color: #FFE600;">Habi</span>! [![App](https://img.shields.io/badge/~-Frontend-red)]() [![By](https://img.shields.io/badge/By-Arnold%20Salazar-%233483FA)](mailto:arnold.salazar@outlook.com)
 
 ###### [Mayo 24, 2021]
 
