@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable guard-for-in */
 import {
   Col,
   Row,

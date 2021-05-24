@@ -4,18 +4,30 @@ import React, { useEffect, useState } from 'react';
 import { FcCalendar, FcKindle } from 'react-icons/fc';
 import trackingService from '../../services/trackingServices';
 import CustomLoadingOverlay from '../../components/LoadingOverlay';
-import { Button, Container } from 'reactstrap';
+import { Button, Container, Modal, ModalBody, ModalHeader } from 'reactstrap';
 
 const Tracking = () => {
   const [limit] = useState(2);
   const [page, setPage] = useState(1);
   const [traking, setTracking] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [itemToggle, setItemToogle] = useState(undefined);
 
   const getTrackingInfo = async (filters) => {
     const trackingInfo = await trackingService(filters);
     await setTracking(trackingInfo);
     setIsLoading(false);
+  };
+
+  const toggle = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const toggleDetail = async (item) => {
+    await setItemToogle(item);
+    console.log(traking[itemToggle]);
+    toggle();
   };
 
   useEffect(() => {
@@ -43,12 +55,18 @@ const Tracking = () => {
                 </div>
                 <div className='d-flex justify-content-between'>
                   <p className='mb-0 text-capitalize'>
-                    <FcCalendar className='mr-1' />
+                    <FcCalendar
+                      className='mr-1'
+                      style={{ cursor: 'pointer' }}
+                    />
                     {dateFormatter(item.date) || '--/--/----'}
                   </p>
 
                   <p className='mb-0 text-capitalize'>
-                    <FcKindle className='mr-1' />
+                    <FcKindle
+                      className='mr-1'
+                      onClick={() => toggleDetail(index)}
+                    />
                     Ver detalles
                   </p>
                 </div>
@@ -92,6 +110,29 @@ const Tracking = () => {
           </Button>
         </div>
       ) : null}
+      <Modal size='md' isOpen={isOpen} toggle={toggle} centered>
+        <ModalHeader toggle={toggle} className='bg-dark text-white'>
+          Detalle
+        </ModalHeader>
+        <ModalBody>
+          {typeof itemToggle === 'number' ? (
+            <>
+              <h5>Cliente</h5>
+              <p className='text-capitalize'>
+                {traking[itemToggle].client.name}
+              </p>
+              <h5>Dirrección</h5>
+              <p className='text-capitalize'>
+                {traking[itemToggle].client.address}
+              </p>
+              <h5>Extras</h5>
+              {traking[itemToggle].extraFlavors.map((extra) => (
+                <span className='bg-light m-2'>{extra.name}</span>
+              ))}
+            </>
+          ) : null}
+        </ModalBody>
+      </Modal>
     </Container>
   );
 };
