@@ -16,6 +16,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { GiFullPizza } from 'react-icons/gi';
+import loading from '../../assets/loading.gif';
 import React, { useEffect, useState } from 'react';
 import setSaleService from '../../services/salesServices';
 import unSelectPizza from '../../assets/unSelectPizza.png';
@@ -27,19 +28,21 @@ const Sales = (props) => {
   const [extras, setExtras] = useState([]);
   const [pizzas, setPizzas] = useState([]);
   const [pizza, setPizza] = useState(undefined);
+  const [isLoading, setIsLoading] = useState(false);
   const [extraFlavors, setExtraFlavors] = useState([]);
   const [saleLoading, setSaleLoading] = useState(false);
   const [client, setClient] = useState({ name: '', address: '' });
 
   const getPizzas = async () => {
     const pizzasList = await getPizzasService();
-    setPizzas(pizzasList);
+    await setPizzas(pizzasList);
   };
 
   const getExtras = async () => {
     let extrasList = await getIngredientsService();
     extrasList = extrasList.filter((item) => item.notExtra !== true);
-    setExtras(extrasList);
+    await setExtras(extrasList);
+    setIsLoading(false);
   };
 
   const getPrice = () => {
@@ -67,6 +70,7 @@ const Sales = (props) => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     getPizzas();
     getExtras();
   }, []);
@@ -153,102 +157,110 @@ const Sales = (props) => {
               <h4 className='m-0'>Proceso de venta</h4>
             </CardHeader>
             <CardBody>
-              <h5>Selecciona Pizza</h5>
-              {pizzas.length ? (
-                <Row className='d-flex justify-content-around'>
-                  {pizzas.map((pizzaItem) => (
-                    <Col xs='6' md='4' key={pizzaItem.name}>
-                      <Card
-                        className='mb-2'
-                        onClick={() => setPizza(pizzaItem)}
-                      >
-                        <CardHeader
-                          className={
-                            pizza?.name === pizzaItem.name
-                              ? 'bg-success text-white'
-                              : 'bg-dark text-white'
-                          }
-                        >
-                          <p className='text-center text-capitalize m-0 text-truncate'>
-                            {pizzaItem.name}
-                          </p>
-                        </CardHeader>
-                        <CardBody>
-                          <img
-                            className='card-img-top'
-                            src={pizzaItem.photo}
-                            alt={pizzaItem.name}
-                          />
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
+              {isLoading ? (
+                <div className='d-flex justify-content-center'>
+                  <img src={loading} alt='loading' height='250px' />
+                </div>
               ) : (
-                <p className='text-muted'>No hay pizzas base aún creadas</p>
-              )}
-              <h5 className='mt-2'>Selecciona Extras</h5>
-              {extras.length ? (
-                <Row>
-                  {extras.map((extraItem) => (
-                    <Col xs='6' md='auto' key={extraItem.name}>
-                      <Button
-                        color={
-                          extraFlavors.filter(
-                            (item) => item.name === extraItem.name
-                          ).length
-                            ? 'success'
-                            : 'dark'
-                        }
-                        className='mb-2'
-                        onClick={async () => setNewExtraFlavor(extraItem)}
-                      >
-                        <p className='text-center text-capitalize m-0 text-truncate'>
-                          {extraItem.name}
-                        </p>
-                      </Button>
-                    </Col>
-                  ))}
-                </Row>
-              ) : (
-                <p className='text-muted'>No hay pizzas base aún creadas</p>
-              )}
+                <>
+                  <h5>Selecciona Pizza</h5>
+                  {pizzas.length ? (
+                    <Row className='d-flex justify-content-around'>
+                      {pizzas.map((pizzaItem) => (
+                        <Col xs='6' md='4' key={pizzaItem.name}>
+                          <Card
+                            className='mb-2'
+                            onClick={() => setPizza(pizzaItem)}
+                          >
+                            <CardHeader
+                              className={
+                                pizza?.name === pizzaItem.name
+                                  ? 'bg-success text-white'
+                                  : 'bg-dark text-white'
+                              }
+                            >
+                              <p className='text-center text-capitalize m-0 text-truncate'>
+                                {pizzaItem.name}
+                              </p>
+                            </CardHeader>
+                            <CardBody>
+                              <img
+                                className='card-img-top'
+                                src={pizzaItem.photo}
+                                alt={pizzaItem.name}
+                              />
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      ))}
+                    </Row>
+                  ) : (
+                    <p className='text-muted'>No hay pizzas base aún creadas</p>
+                  )}
+                  <h5 className='mt-2'>Selecciona Extras</h5>
+                  {extras.length ? (
+                    <Row>
+                      {extras.map((extraItem) => (
+                        <Col xs='6' md='auto' key={extraItem.name}>
+                          <Button
+                            color={
+                              extraFlavors.filter(
+                                (item) => item.name === extraItem.name
+                              ).length
+                                ? 'success'
+                                : 'dark'
+                            }
+                            className='mb-2'
+                            onClick={async () => setNewExtraFlavor(extraItem)}
+                          >
+                            <p className='text-center text-capitalize m-0 text-truncate'>
+                              {extraItem.name}
+                            </p>
+                          </Button>
+                        </Col>
+                      ))}
+                    </Row>
+                  ) : (
+                    <p className='text-muted'>No hay pizzas base aún creadas</p>
+                  )}
 
-              <h5 className='mt-2'>Cliente</h5>
-              <Form>
-                <Row>
-                  <Col>
-                    <InputGroup className='mt-2'>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText className='input-group-prepend'>
-                          Nombre
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        name='name'
-                        type='text'
-                        value={client?.name}
-                        onChange={handleChange}
-                      />
-                    </InputGroup>
-                  </Col>
-                  <Col>
-                    <InputGroup className='mt-2'>
-                      <InputGroupAddon addonType='prepend'>
-                        <InputGroupText className='input-group-prepend'>
-                          Dirección
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        name='address'
-                        type='text'
-                        value={client?.address}
-                        onChange={handleChange}
-                      />
-                    </InputGroup>
-                  </Col>
-                </Row>
-              </Form>
+                  <h5 className='mt-2'>Cliente</h5>
+                  <Form>
+                    <Row>
+                      <Col>
+                        <InputGroup className='mt-2'>
+                          <InputGroupAddon addonType='prepend'>
+                            <InputGroupText className='input-group-prepend'>
+                              Nombre
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input
+                            name='name'
+                            type='text'
+                            value={client?.name}
+                            onChange={handleChange}
+                          />
+                        </InputGroup>
+                      </Col>
+                      <Col>
+                        <InputGroup className='mt-2'>
+                          <InputGroupAddon addonType='prepend'>
+                            <InputGroupText className='input-group-prepend'>
+                              Dirección
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input
+                            name='address'
+                            type='text'
+                            value={client?.address}
+                            onChange={handleChange}
+                          />
+                        </InputGroup>
+                      </Col>
+                    </Row>
+                  </Form>
+                </>
+              )}
             </CardBody>
           </Card>
         </Col>
