@@ -128,7 +128,11 @@ const Sales = (props) => {
                           <GiFullPizza className='mr-1 text-danger' />
                           {item.name || 'Ingrediente'}
                         </p>
-                        <p className='mb-0'>{`$ ${item.cost}` || '$ 0.00'}</p>
+                        <p className='mb-0'>
+                          {`$ ${
+                            item.cost * (1 + props.activeUser.profitability)
+                          }` || '$ 0.00'}
+                        </p>
                       </div>
                     </li>
                   ))
