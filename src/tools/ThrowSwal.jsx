@@ -8,4 +8,4 @@ const ThrowSwal = ({ title, text, icon = 'error', ...rest }) =>
     ...rest
   });
 
-export default { ThrowSwal };
+export default ThrowSwal;

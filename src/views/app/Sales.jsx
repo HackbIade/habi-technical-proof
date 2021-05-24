@@ -16,6 +16,7 @@ import {
 import { connect } from 'react-redux';
 import { GiFullPizza } from 'react-icons/gi';
 import React, { useEffect, useState } from 'react';
+import setSaleService from '../../services/salesServices';
 import unSelectPizza from '../../assets/unSelectPizza.png';
 import getPizzasService from '../../services/pizzasServices';
 import getIngredientsService from '../../services/ingredientsServices';
@@ -80,9 +81,12 @@ const Sales = (props) => {
             <CardHeader className='bg-dark text-white d-flex justify-content-between'>
               <h4 className='m-0'>Resumen</h4>
               <Button
+                size='sm'
                 color='success'
                 disabled={!(pizza && client?.name && client?.address)}
-                size='sm'
+                onClick={() =>
+                  setSaleService({ client, pizza, extraFlavors, price })
+                }
               >
                 Vender
               </Button>
