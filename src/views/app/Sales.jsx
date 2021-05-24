@@ -7,6 +7,7 @@ import {
   Form,
   Input,
   Button,
+  Spinner,
   CardBody,
   CardHeader,
   InputGroup,
@@ -26,8 +27,9 @@ const Sales = (props) => {
   const [extras, setExtras] = useState([]);
   const [pizzas, setPizzas] = useState([]);
   const [pizza, setPizza] = useState(undefined);
-  const [client, setClient] = useState(undefined);
   const [extraFlavors, setExtraFlavors] = useState([]);
+  const [saleLoading, setSaleLoading] = useState(false);
+  const [client, setClient] = useState({ name: '', address: '' });
 
   const getPizzas = async () => {
     const pizzasList = await getPizzasService();
@@ -83,12 +85,19 @@ const Sales = (props) => {
               <Button
                 size='sm'
                 color='success'
-                disabled={!(pizza && client?.name && client?.address)}
-                onClick={() =>
-                  setSaleService({ client, pizza, extraFlavors, price })
+                disabled={
+                  !(pizza && client?.name && client?.address) || saleLoading
                 }
+                onClick={() => {
+                  setSaleLoading(true);
+                  setSaleService({ client, pizza, extraFlavors, price });
+                  setExtraFlavors([]);
+                  setPizza(undefined);
+                  setClient({ name: '', address: '' });
+                  setSaleLoading(false);
+                }}
               >
-                Vender
+                {saleLoading ? <Spinner size='sm' /> : 'Vender'}
               </Button>
             </CardHeader>
             <CardBody>
@@ -188,7 +197,7 @@ const Sales = (props) => {
                             : 'dark'
                         }
                         className='mb-2'
-                        onClick={() => setNewExtraFlavor(extraItem)}
+                        onClick={async () => setNewExtraFlavor(extraItem)}
                       >
                         <p className='text-center text-capitalize m-0 text-truncate'>
                           {extraItem.name}
