@@ -5,7 +5,9 @@ import NavbarLayout from './components/Navbar';
 
 const AppLayout = ({ children }) => (
   <>
-    <img className='mx-3' src={logo} height='60em' alt='logo' />
+    <div className='bg-dark'>
+      <img className='mx-3' src={logo} height='60em' alt='logo' />
+    </div>
     <NavbarLayout />
     <div>{children}</div>
   </>

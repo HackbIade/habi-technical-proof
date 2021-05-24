@@ -1,24 +1,31 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable guard-for-in */
-import React, { useEffect, useState } from 'react';
-import { GiFullPizza } from 'react-icons/gi';
-import unSelectPizza from '../../assets/unSelectPizza.png';
 import {
   Col,
   Row,
   Card,
+  Form,
+  Input,
   Button,
   CardBody,
-  Container,
-  CardHeader
+  CardHeader,
+  InputGroup,
+  InputGroupText,
+  InputGroupAddon
 } from 'reactstrap';
+import { connect } from 'react-redux';
+import { GiFullPizza } from 'react-icons/gi';
+import React, { useEffect, useState } from 'react';
+import unSelectPizza from '../../assets/unSelectPizza.png';
 import getPizzasService from '../../services/pizzasServices';
 import getIngredientsService from '../../services/ingredientsServices';
 
-const Sales = () => {
+const Sales = (props) => {
   const [price, setPrice] = useState(0);
-  const [pizza] = useState(undefined);
   const [extras, setExtras] = useState([]);
   const [pizzas, setPizzas] = useState([]);
+  const [pizza, setPizza] = useState(undefined);
+  const [client, setClient] = useState(undefined);
   const [extraFlavors, setExtraFlavors] = useState([]);
 
   const getPizzas = async () => {
@@ -34,21 +41,14 @@ const Sales = () => {
 
   const getPrice = () => {
     let totalPrice = 0;
-    // totalPrice += pizza.cost;
+    totalPrice += pizza?.cost ? pizza.cost : 0;
     extraFlavors.forEach((extra) => {
       totalPrice += extra.cost;
     });
+
+    totalPrice *= 1 + props.activeUser.profitability;
     setPrice(totalPrice);
   };
-
-  useEffect(() => {
-    getPizzas();
-    getExtras();
-  }, []);
-
-  useEffect(() => {
-    getPrice();
-  });
 
   const setNewExtraFlavor = (extra) => {
     if (extraFlavors.filter((item) => item.name === extra.name).length) {
@@ -58,13 +58,34 @@ const Sales = () => {
     }
   };
 
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    setClient({ ...client, [name]: value });
+  };
+
+  useEffect(() => {
+    getPizzas();
+    getExtras();
+  }, []);
+
+  useEffect(() => {
+    getPrice();
+  }, [extraFlavors, pizza]);
+
   return (
-    <Container className='mt-4'>
+    <div className='m-4'>
       <Row>
-        <Col xs='12' md='5'>
+        <Col xs='12' md='4'>
           <Card>
-            <CardHeader className='bg-dark text-white'>
+            <CardHeader className='bg-dark text-white d-flex justify-content-between'>
               <h4 className='m-0'>Resumen</h4>
+              <Button
+                color='success'
+                disabled={!(pizza && client?.name && client?.address)}
+                size='sm'
+              >
+                Vender
+              </Button>
             </CardHeader>
             <CardBody>
               <div className='d-flex justify-content-between'>
@@ -109,7 +130,7 @@ const Sales = () => {
             </CardBody>
           </Card>
         </Col>
-        <Col xs='12' md='7'>
+        <Col xs='12' md='8'>
           <Card>
             <CardHeader className='bg-dark text-white'>
               <h4 className='m-0'>Proceso de venta</h4>
@@ -120,8 +141,17 @@ const Sales = () => {
                 <Row className='d-flex justify-content-around'>
                   {pizzas.map((pizzaItem) => (
                     <Col xs='6' md='4' key={pizzaItem.name}>
-                      <Card className='mb-2'>
-                        <CardHeader>
+                      <Card
+                        className='mb-2'
+                        onClick={() => setPizza(pizzaItem)}
+                      >
+                        <CardHeader
+                          className={
+                            pizza?.name === pizzaItem.name
+                              ? 'bg-success text-white'
+                              : 'bg-dark text-white'
+                          }
+                        >
                           <p className='text-center text-capitalize m-0 text-truncate'>
                             {pizzaItem.name}
                           </p>
@@ -150,7 +180,7 @@ const Sales = () => {
                           extraFlavors.filter(
                             (item) => item.name === extraItem.name
                           ).length
-                            ? 'danger'
+                            ? 'success'
                             : 'dark'
                         }
                         className='mb-2'
@@ -166,12 +196,52 @@ const Sales = () => {
               ) : (
                 <p className='text-muted'>No hay pizzas base aún creadas</p>
               )}
+
+              <h5 className='mt-2'>Cliente</h5>
+              <Form>
+                <Row>
+                  <Col>
+                    <InputGroup className='mt-2'>
+                      <InputGroupAddon addonType='prepend'>
+                        <InputGroupText className='input-group-prepend'>
+                          Nombre
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        name='name'
+                        type='text'
+                        value={client?.name}
+                        onChange={handleChange}
+                      />
+                    </InputGroup>
+                  </Col>
+                  <Col>
+                    <InputGroup className='mt-2'>
+                      <InputGroupAddon addonType='prepend'>
+                        <InputGroupText className='input-group-prepend'>
+                          Dirección
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input
+                        name='address'
+                        type='text'
+                        value={client?.address}
+                        onChange={handleChange}
+                      />
+                    </InputGroup>
+                  </Col>
+                </Row>
+              </Form>
             </CardBody>
           </Card>
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 };
 
-export default Sales;
+const mapStateToProps = (state) => ({
+  activeUser: state.user.activeUser
+});
+
+export default connect(mapStateToProps)(Sales);
